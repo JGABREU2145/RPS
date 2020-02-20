@@ -5,6 +5,38 @@ var comp = [];
 
 let userScore = 0;
 let compScore = 0;
+let maxScore = 0;
+
+const bestOf = () => {
+    inq.prompt([
+        {
+            type: "list",
+            name: "bestOf",
+            message: "What series would you like to play?",
+            choices: [
+                "Best of 3",
+                "Best of 5",
+                "Best of 7"
+            ]
+        }
+    ])
+    .then((answers) => {
+        let gameType = answers.bestOf;
+
+        if(gameType == "Best of 3") {
+            maxScore = 2
+        }
+        else if (gameType == "Best of 5") {
+            maxScore = 3
+        }
+        else if (gameType == "Best of 7") {
+            maxScore = 4
+        }
+    })
+    .then(()=> {
+        userChoice();
+    })
+};
 
 const userChoice = () => {
 
@@ -37,7 +69,7 @@ const compChoice = () => {
     console.log(`Computer picked ${comp}`);
 
     compare();
-}
+};
 
 const compare = () => {
     var userAnswer = user.toString();
@@ -47,25 +79,38 @@ const compare = () => {
         console.log("It's a tie!")
     }
     else if(userAnswer === "Paper" && compAnswer === "Rock") {
-        console.log("You Won!")
+        console.log("You won this round!")
         userScore = userScore + 1;
     }
     else if(userAnswer === "Rock" && compAnswer === "Scissors") {
-        console.log("You Won!")
+        console.log("You won this round!")
         userScore = userScore + 1;
     }
     else if(userAnswer === "Scissors" && compAnswer === "Paper") {
-        console.log("You Won!")
+        console.log("You won this round!")
         userScore = userScore + 1;
     }
     else {
-        console.log("You Lost!")
+        console.log("Computer won this round!")
         compScore = compScore + 1;
     }
 
     console.log(`Your score: ${userScore}`);
     console.log(`Computer score: ${compScore}`);
-    keepPlaying();
+
+    if (userScore === maxScore) {
+        console.log("You won the series!")
+        return keepPlaying();
+    }
+    else if (compScore === maxScore) {
+        console.log("Computer won the series! Better luck next time!")
+        return keepPlaying();
+    }
+
+    user.shift();
+    comp.shift();
+
+    userChoice();
     
 };
 
@@ -82,7 +127,10 @@ const keepPlaying = () => {
             user.shift();
             comp.shift();
 
-            userChoice();
+            userScore = 0;
+            compScore = 0;
+
+            bestOf();
         }
         else {
             return;
@@ -90,4 +138,4 @@ const keepPlaying = () => {
     });
 };
 
-userChoice();
+bestOf();
