@@ -69,16 +69,20 @@ const userChoice = () => {
     })
 };
 
+//Function that randomly generates the computers choice
 const compChoice = () => {
     
     var choices = ["Rock", "Paper", "Scissors"];
     var pick = [Math.floor(Math.random() * choices.length)];
+
+    //Push the generated choice to the comp array
     comp.push(choices[pick]);
     console.log(`Computer picked ${comp}`);
 
     compare();
 };
 
+//Function that decides if the user or computer win the round
 const compare = () => {
     //Convert the user and comp arrays to strings
     var userAnswer = user.toString();
@@ -157,4 +161,5 @@ const keepPlaying = () => {
     });
 };
 
+// Call the bestOf() function to start the game
 bestOf();
